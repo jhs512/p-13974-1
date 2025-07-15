@@ -13,7 +13,7 @@ export default function Page() {
 
     const titleInput = form.elements.namedItem("title") as HTMLInputElement;
     const contentTextarea = form.elements.namedItem(
-      "content"
+      "content",
     ) as HTMLTextAreaElement;
 
     titleInput.value = titleInput.value.trim();

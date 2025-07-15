@@ -38,7 +38,7 @@ function usePost(id: number) {
 
 function usePostComments(postId: number) {
   const [postComments, setPostComments] = useState<PostCommentDto[] | null>(
-    null
+    null,
   );
 
   useEffect(() => {
@@ -87,7 +87,7 @@ function usePostComments(postId: number) {
   const modifyComment = (
     commentId: number,
     content: string,
-    onSuccess: (data: any) => void
+    onSuccess: (data: any) => void,
   ) => {
     apiFetch(`/api/v1/posts/${postId}/comments/${commentId}`, {
       method: "PUT",
@@ -98,8 +98,8 @@ function usePostComments(postId: number) {
 
         setPostComments(
           postComments.map((comment) =>
-            comment.id === commentId ? { ...comment, content } : comment
-          )
+            comment.id === commentId ? { ...comment, content } : comment,
+          ),
         );
 
         onSuccess(data);
@@ -158,14 +158,14 @@ function PostCommentWrite({
   const { postId, writeComment } = postCommentsState;
 
   const handleCommentWriteFormSubmit = (
-    e: React.FormEvent<HTMLFormElement>
+    e: React.FormEvent<HTMLFormElement>,
   ) => {
     e.preventDefault();
 
     const form = e.target as HTMLFormElement;
 
     const contentTextarea = form.elements.namedItem(
-      "content"
+      "content",
     ) as HTMLTextAreaElement;
 
     contentTextarea.value = contentTextarea.value.trim();
@@ -239,7 +239,7 @@ function PostCommentListItem({
     const form = e.target as HTMLFormElement;
 
     const contentTextarea = form.elements.namedItem(
-      "content"
+      "content",
     ) as HTMLTextAreaElement;
 
     contentTextarea.value = contentTextarea.value.trim();
