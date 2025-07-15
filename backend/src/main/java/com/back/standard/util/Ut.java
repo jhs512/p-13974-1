@@ -122,5 +122,11 @@ public class Ut {
             int exitCode = process.waitFor();
             System.out.println("종료 코드: " + exitCode);
         }
+
+        public static void runAsync(String... args) {
+            new Thread(() -> {
+                run(args);
+            }).start();
+        }
     }
 }
