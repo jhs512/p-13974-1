@@ -11,6 +11,8 @@ import type { components } from "@/lib/backend/apiV1/schema";
 
 type PostWithContentDto = components["schemas"]["PostWithContentDto"];
 type PostCommentDto = components["schemas"]["PostCommentDto"];
+type RsDataVoid = components["schemas"]["RsDataVoid"];
+type RsDataPostCommentDto = components["schemas"]["RsDataPostCommentDto"];
 
 function usePost(id: number) {
   const [post, setPost] = useState<PostWithContentDto | null>(null);
@@ -52,8 +54,10 @@ function usePostComments(postId: number) {
       });
   }, [postId]);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const deleteComment = (commentId: number, onSuccess: (data: any) => void) => {
+  const deleteComment = (
+    commentId: number,
+    onSuccess: (data: RsDataVoid) => void,
+  ) => {
     apiFetch(`/api/v1/posts/${postId}/comments/${commentId}`, {
       method: "DELETE",
     })
@@ -69,8 +73,10 @@ function usePostComments(postId: number) {
       });
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const writeComment = (content: string, onSuccess: (data: any) => void) => {
+  const writeComment = (
+    content: string,
+    onSuccess: (data: RsDataPostCommentDto) => void,
+  ) => {
     apiFetch(`/api/v1/posts/${postId}/comments`, {
       method: "POST",
       body: JSON.stringify({
@@ -92,7 +98,7 @@ function usePostComments(postId: number) {
   const modifyComment = (
     commentId: number,
     content: string,
-    onSuccess: (data: any) => void, // eslint-disable-line @typescript-eslint/no-explicit-any
+    onSuccess: (data: RsDataVoid) => void,
   ) => {
     apiFetch(`/api/v1/posts/${postId}/comments/${commentId}`, {
       method: "PUT",
