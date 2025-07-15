@@ -21,7 +21,7 @@ function usePost(id: number) {
       .catch((error) => {
         alert(`${error.resultCode} : ${error.msg}`);
       });
-  }, []);
+  }, [id]);
 
   const deletePost = (id: number, onSuccess: () => void) => {
     apiFetch(`/api/v1/posts/${id}`, {
@@ -50,8 +50,9 @@ function usePostComments(postId: number) {
       .catch((error) => {
         alert(`${error.resultCode} : ${error.msg}`);
       });
-  }, []);
+  }, [postId]);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const deleteComment = (commentId: number, onSuccess: (data: any) => void) => {
     apiFetch(`/api/v1/posts/${postId}/comments/${commentId}`, {
       method: "DELETE",
@@ -68,6 +69,7 @@ function usePostComments(postId: number) {
       });
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const writeComment = (content: string, onSuccess: (data: any) => void) => {
     apiFetch(`/api/v1/posts/${postId}/comments`, {
       method: "POST",
@@ -90,7 +92,7 @@ function usePostComments(postId: number) {
   const modifyComment = (
     commentId: number,
     content: string,
-    onSuccess: (data: any) => void,
+    onSuccess: (data: any) => void, // eslint-disable-line @typescript-eslint/no-explicit-any
   ) => {
     apiFetch(`/api/v1/posts/${postId}/comments/${commentId}`, {
       method: "PUT",
