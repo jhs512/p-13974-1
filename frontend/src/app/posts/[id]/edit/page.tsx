@@ -8,7 +8,7 @@ import { apiFetch } from "@/lib/backend/client";
 
 import type { components } from "@/lib/backend/apiV1/schema";
 
-type PostWithContentDto = components["schemas"]["PostDto"];
+type PostWithContentDto = components["schemas"]["PostWithContentDto"];
 
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
