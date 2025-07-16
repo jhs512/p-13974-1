@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 import { Geist, Geist_Mono } from "next/font/google";
-import Link from "next/link";
 
+import ClientLayout from "./ClientLayout";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -30,18 +30,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
-        <header>
-          <nav className="flex">
-            <Link href="/" className="p-2 rounded hover:bg-gray-100">
-              메인
-            </Link>
-            <Link href="/posts" className="p-2 rounded hover:bg-gray-100">
-              글 목록
-            </Link>
-          </nav>
-        </header>
-        <main className="flex-1 flex flex-col">{children}</main>
-        <footer className="text-center p-2">푸터</footer>
+        <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
   );
