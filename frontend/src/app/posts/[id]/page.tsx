@@ -88,18 +88,26 @@ function usePostComments(postId: number) {
     commentId: number,
     onSuccess: (data: RsDataVoid) => void,
   ) => {
-    apiFetch(`/api/v1/posts/${postId}/comments/${commentId}`, {
-      method: "DELETE",
-    })
-      .then((data) => {
+    client
+      .DELETE("/api/v1/posts/{postId}/comments/{id}", {
+        params: {
+          path: {
+            postId,
+            id: commentId,
+          },
+        },
+      })
+      .then((res) => {
+        if (res.error) {
+          alert(res.error.msg);
+          return;
+        }
+
         if (postComments == null) return;
 
         setPostComments(postComments.filter((c) => c.id != commentId));
 
-        onSuccess(data);
-      })
-      .catch((error) => {
-        alert(`${error.resultCode} : ${error.msg}`);
+        onSuccess(res.data);
       });
   };
 
