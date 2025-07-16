@@ -115,21 +115,28 @@ function usePostComments(postId: number) {
     content: string,
     onSuccess: (data: RsDataPostCommentDto) => void,
   ) => {
-    apiFetch(`/api/v1/posts/${postId}/comments`, {
-      method: "POST",
-      body: JSON.stringify({
-        content,
-      }),
-    })
-      .then((data) => {
+    client
+      .POST("/api/v1/posts/{postId}/comments", {
+        params: {
+          path: {
+            postId,
+          },
+        },
+        body: {
+          content,
+        },
+      })
+      .then((res) => {
+        if (res.error) {
+          alert(res.error.msg);
+          return;
+        }
+
         if (postComments == null) return;
 
-        setPostComments([...postComments, data.data]);
+        setPostComments([...postComments, res.data.data]);
 
-        onSuccess(data);
-      })
-      .catch((error) => {
-        alert(`${error.resultCode} : ${error.msg}`);
+        onSuccess(res.data);
       });
   };
 
