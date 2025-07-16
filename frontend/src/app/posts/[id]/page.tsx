@@ -67,10 +67,20 @@ function usePostComments(postId: number) {
   );
 
   useEffect(() => {
-    apiFetch(`/api/v1/posts/${postId}/comments`)
-      .then(setPostComments)
-      .catch((error) => {
-        alert(`${error.resultCode} : ${error.msg}`);
+    client
+      .GET("/api/v1/posts/{postId}/comments", {
+        params: {
+          path: {
+            postId,
+          },
+        },
+      })
+      .then((res) => {
+        if (res.error) {
+          alert(res.error.msg);
+          return;
+        }
+        setPostComments(res.data);
       });
   }, [postId]);
 
