@@ -38,12 +38,14 @@ function useAuth() {
     });
   };
 
-  if (isLogin) return { isLogin: true, loginMember, logout } as const;
+  if (isLogin)
+    return { isLogin: true, loginMember, logout, setLoginMember } as const;
 
   return {
     isLogin: false,
     loginMember: null,
     logout,
+    setLoginMember,
   } as const;
 }
 
@@ -52,7 +54,7 @@ export default function ClientLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { loginMember, isLogin, logout: _logout } = useAuth();
+  const { loginMember, isLogin, logout: _logout, setLoginMember } = useAuth();
   const router = useRouter();
 
   const logout = () => {
@@ -70,12 +72,27 @@ export default function ClientLayout({
             글 목록
           </Link>
           {!isLogin && (
-            <Link
-              href="/members/login"
-              className="p-2 rounded hover:bg-gray-100"
-            >
-              로그인
-            </Link>
+            <>
+              <Link
+                href="/members/login"
+                className="p-2 rounded hover:bg-gray-100"
+              >
+                로그인
+              </Link>
+              <button
+                className="p-2 rounded hover:bg-gray-100"
+                onClick={() =>
+                  setLoginMember({
+                    id: 1,
+                    createDate: "",
+                    modifyDate: "",
+                    name: "임꺽정",
+                  })
+                }
+              >
+                가짜 로그인
+              </button>
+            </>
           )}
           {isLogin && (
             <button onClick={logout} className="p-2 rounded hover:bg-gray-100">
