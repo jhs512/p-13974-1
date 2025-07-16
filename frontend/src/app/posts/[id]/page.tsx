@@ -5,7 +5,7 @@ import { use, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import client, { apiFetch } from "@/lib/backend/client";
+import client from "@/lib/backend/client";
 
 import type { components } from "@/lib/backend/apiV1/schema";
 
@@ -145,11 +145,24 @@ function usePostComments(postId: number) {
     content: string,
     onSuccess: (data: RsDataVoid) => void,
   ) => {
-    apiFetch(`/api/v1/posts/${postId}/comments/${commentId}`, {
-      method: "PUT",
-      body: JSON.stringify({ content }),
-    })
-      .then((data) => {
+    client
+      .PUT("/api/v1/posts/{postId}/comments/{id}", {
+        params: {
+          path: {
+            postId,
+            id: commentId,
+          },
+        },
+        body: {
+          content,
+        },
+      })
+      .then((res) => {
+        if (res.error) {
+          alert(res.error.msg);
+          return;
+        }
+
         if (postComments == null) return;
 
         setPostComments(
@@ -158,10 +171,7 @@ function usePostComments(postId: number) {
           ),
         );
 
-        onSuccess(data);
-      })
-      .catch((error) => {
-        alert(`${error.resultCode} : ${error.msg}`);
+        onSuccess(res.data);
       });
   };
 
