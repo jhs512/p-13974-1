@@ -5,7 +5,7 @@ import { use, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { apiFetch } from "@/lib/backend/client";
+import client, { apiFetch } from "@/lib/backend/client";
 
 import type { components } from "@/lib/backend/apiV1/schema";
 
@@ -18,10 +18,21 @@ function usePost(id: number) {
   const [post, setPost] = useState<PostWithContentDto | null>(null);
 
   useEffect(() => {
-    apiFetch(`/api/v1/posts/${id}`)
-      .then(setPost)
-      .catch((error) => {
-        alert(`${error.resultCode} : ${error.msg}`);
+    client
+      .GET("/api/v1/posts/{id}", {
+        params: {
+          path: {
+            id,
+          },
+        },
+      })
+      .then((res) => {
+        if (res.error) {
+          alert(res.error.msg);
+          return;
+        }
+
+        setPost(res.data);
       });
   }, [id]);
 
