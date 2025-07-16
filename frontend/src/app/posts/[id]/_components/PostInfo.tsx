@@ -1,7 +1,7 @@
+import usePost from "@/domain/post/hooks/usePost";
+
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-
-import usePost from "../_hooks/usePost";
 
 export default function PostInfo({
   postState,
