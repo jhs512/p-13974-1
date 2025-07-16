@@ -21,6 +21,10 @@ function useAuth() {
     });
   }, []);
 
+  const clearLoginMember = () => {
+    setLoginMember(null);
+  };
+
   const logout = (onSuccess: () => void) => {
     client.DELETE("/api/v1/members/logout").then((res) => {
       if (res.error) {
@@ -28,22 +32,18 @@ function useAuth() {
         return;
       }
 
+      clearLoginMember();
+
       onSuccess();
     });
   };
 
-  const clearLoginMember = () => {
-    setLoginMember(null);
-  };
-
-  if (isLogin)
-    return { isLogin: true, loginMember, logout, clearLoginMember } as const;
+  if (isLogin) return { isLogin: true, loginMember, logout } as const;
 
   return {
     isLogin: false,
     loginMember: null,
     logout,
-    clearLoginMember,
   } as const;
 }
 
@@ -52,7 +52,7 @@ export default function ClientLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { loginMember, isLogin, logout: _logout, clearLoginMember } = useAuth();
+  const { loginMember, isLogin, logout: _logout } = useAuth();
   const router = useRouter();
 
   const logout = () => {
@@ -83,20 +83,9 @@ export default function ClientLayout({
             </button>
           )}
           {isLogin && (
-            <>
-              <button
-                onClick={clearLoginMember}
-                className="p-2 rounded hover:bg-gray-100"
-              >
-                가짜 로그아웃
-              </button>
-              <Link
-                href="/members/me"
-                className="p-2 rounded hover:bg-gray-100"
-              >
-                {loginMember.name}님의 정보
-              </Link>
-            </>
+            <Link href="/members/me" className="p-2 rounded hover:bg-gray-100">
+              {loginMember.name}님의 정보
+            </Link>
           )}
         </nav>
       </header>
