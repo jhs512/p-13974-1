@@ -37,12 +37,21 @@ function usePost(id: number) {
   }, [id]);
 
   const deletePost = (id: number, onSuccess: () => void) => {
-    apiFetch(`/api/v1/posts/${id}`, {
-      method: "DELETE",
-    })
-      .then(onSuccess)
-      .catch((error) => {
-        alert(`${error.resultCode} : ${error.msg}`);
+    client
+      .DELETE("/api/v1/posts/{id}", {
+        params: {
+          path: {
+            id,
+          },
+        },
+      })
+      .then((res) => {
+        if (res.error) {
+          alert(res.error.msg);
+          return;
+        }
+
+        onSuccess();
       });
   };
 
