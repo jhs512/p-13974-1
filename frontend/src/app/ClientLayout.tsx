@@ -1,7 +1,6 @@
 "use client";
 
-import { AuthContext } from "@/global/auth/hooks/useAuth";
-import { use } from "react";
+import { AuthContext, useAuthContext } from "@/global/auth/hooks/useAuth";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -11,7 +10,7 @@ export default function ClientLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const authState = use(AuthContext);
+  const authState = useAuthContext();
   const router = useRouter();
 
   const {
