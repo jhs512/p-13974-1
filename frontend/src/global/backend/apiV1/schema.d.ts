@@ -280,9 +280,9 @@ export interface components {
       password: string;
     };
     MemberLoginResBody: {
-      item?: components["schemas"]["MemberDto"];
-      apiKey?: string;
-      accessToken?: string;
+      item: components["schemas"]["MemberDto"];
+      apiKey: string;
+      accessToken: string;
     };
     RsDataMemberLoginResBody: {
       resultCode: string;
@@ -314,7 +314,7 @@ export interface components {
     };
     AdmPostCountResBody: {
       /** Format: int64 */
-      all?: number;
+      all: number;
     };
   };
   responses: never;
