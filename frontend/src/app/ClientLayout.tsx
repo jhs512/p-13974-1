@@ -2,12 +2,16 @@
 
 import type { components } from "@/global/backend/apiV1/schema";
 import client from "@/global/backend/client";
-import { useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 type MemberDto = components["schemas"]["MemberDto"];
+
+export const AuthContext = createContext<ReturnType<typeof useAuth> | null>(
+  null,
+);
 
 function useAuth() {
   const [loginMember, setLoginMember] = useState<MemberDto | null>(null);
@@ -54,15 +58,17 @@ export default function ClientLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { loginMember, isLogin, logout: _logout, setLoginMember } = useAuth();
+  const authState = useAuth();
   const router = useRouter();
+
+  const { loginMember, isLogin, logout: _logout } = authState;
 
   const logout = () => {
     _logout(() => router.replace("/"));
   };
 
   return (
-    <>
+    <AuthContext value={authState}>
       <header>
         <nav className="flex">
           <Link href="/" className="p-2 rounded hover:bg-gray-100">
@@ -72,27 +78,12 @@ export default function ClientLayout({
             글 목록
           </Link>
           {!isLogin && (
-            <>
-              <Link
-                href="/members/login"
-                className="p-2 rounded hover:bg-gray-100"
-              >
-                로그인
-              </Link>
-              <button
-                className="p-2 rounded hover:bg-gray-100"
-                onClick={() =>
-                  setLoginMember({
-                    id: 1,
-                    createDate: "",
-                    modifyDate: "",
-                    name: "임꺽정",
-                  })
-                }
-              >
-                가짜 로그인
-              </button>
-            </>
+            <Link
+              href="/members/login"
+              className="p-2 rounded hover:bg-gray-100"
+            >
+              로그인
+            </Link>
           )}
           {isLogin && (
             <button onClick={logout} className="p-2 rounded hover:bg-gray-100">
@@ -108,6 +99,6 @@ export default function ClientLayout({
       </header>
       <main className="flex-1 flex flex-col">{children}</main>
       <footer className="text-center p-2">푸터</footer>
-    </>
+    </AuthContext>
   );
 }
