@@ -48,6 +48,16 @@ export const AuthContext = createContext<ReturnType<typeof useAuth> | null>(
   null,
 );
 
+export function AuthProvider({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  const authState = useAuth();
+
+  return <AuthContext value={authState}>{children}</AuthContext>;
+}
+
 export function useAuthContext() {
   const authState = use(AuthContext);
 
