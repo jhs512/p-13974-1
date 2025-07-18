@@ -13,11 +13,7 @@ export default function ClientLayout({
   const authState = useAuthContext();
   const router = useRouter();
 
-  const {
-    loginMember = null,
-    isLogin = false,
-    logout: _logout = () => {},
-  } = authState ?? {};
+  const { loginMember, isLogin, logout: _logout } = authState;
 
   const logout = () => {
     _logout(() => router.replace("/"));
@@ -48,7 +44,7 @@ export default function ClientLayout({
           )}
           {isLogin && (
             <Link href="/members/me" className="p-2 rounded hover:bg-gray-100">
-              {loginMember?.name}님의 정보
+              {loginMember.name}님의 정보
             </Link>
           )}
         </nav>

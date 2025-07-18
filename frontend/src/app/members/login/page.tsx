@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 
 export default function Page() {
   const router = useRouter();
-  const authState = useAuthContext();
+  const { setLoginMember } = useAuthContext();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -62,7 +62,7 @@ export default function Page() {
           return;
         }
 
-        authState?.setLoginMember(res.data.data.item);
+        setLoginMember(res.data.data.item);
 
         alert(res.data.msg);
         router.replace(`/`);
