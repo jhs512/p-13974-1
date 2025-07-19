@@ -2,10 +2,10 @@
 
 import { useAuthContext } from "@/global/auth/hooks/useAuth";
 
-export default function withAdmin(Component: React.ComponentType) {
-  return function WithAdminComponent(
-    props: React.ComponentProps<typeof Component>,
-  ) {
+export default function withAdmin<P extends object>(
+  Component: React.ComponentType<P>,
+) {
+  return function WithAdminComponent(props: P) {
     const { isLogin, isAdmin } = useAuthContext();
 
     if (!isLogin) {

@@ -2,10 +2,10 @@
 
 import { useAuthContext } from "@/global/auth/hooks/useAuth";
 
-export default function withLogout(Component: React.ComponentType) {
-  return function WithLogoutComponent(
-    props: React.ComponentProps<typeof Component>,
-  ) {
+export default function withLogout<P extends object>(
+  Component: React.ComponentType<P>,
+) {
+  return function WithLogoutComponent(props: P) {
     const { isLogin } = useAuthContext();
 
     if (isLogin) {
